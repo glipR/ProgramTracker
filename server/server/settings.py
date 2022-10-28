@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "dashboard.apps.DashboardConfig",
     "sitelinks.apps.SitelinksConfig",
     "problems.apps.ProblemsConfig",
+    "streaks.apps.StreaksConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -42,7 +43,9 @@ class Submission(models.Model):
     
     problem = models.ForeignKey(Problem, related_name="submissions", on_delete=models.CASCADE)
     language = models.ForeignKey(Language, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     submission_id = models.CharField(max_length=50)
+    submission_time = models.DateTimeField(default=datetime.datetime.now())
     
     result = models.CharField(max_length=48)
     time_taken = models.IntegerField()

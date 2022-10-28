@@ -1,5 +1,6 @@
 import time
 import requests
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -59,10 +60,12 @@ class CodeForcesLink(models.Model):
                 p = Problem.objects.get(source="CF", problem_id=problem_id)
             # Create relevant submission object.
             Submission.objects.create(
+                user=self.user,
                 submission_id=sub["id"],
                 problem=p,
                 result=sub["verdict"],
                 language=Language.objects.get_or_create(show_name=sub["programmingLanguage"])[0],
+                submission_time=datetime.datetime.fromtimestamp(sub["creationTimeSeconds"]),
                 time_taken=sub["timeConsumedMillis"],
                 memory_taken=sub["memoryConsumedBytes"],
             )
