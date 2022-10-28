@@ -3,6 +3,8 @@ import requests
 from django.db import models
 from django.contrib.auth.models import User
 
+from problems.models import Problem, Submission, Language
+
 CF_NUM_SUBMISSIONS = 20
 
 class CodeForcesLink(models.Model):
@@ -12,6 +14,9 @@ class CodeForcesLink(models.Model):
     
     last_created_submission_time = models.BigIntegerField(default=-1)
     last_created_submission_id = models.BigIntegerField(default=-1)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.handle}"
 
     def get_new_submissions(self):
         previous_time = self.last_created_submission_time
@@ -40,9 +45,27 @@ class CodeForcesLink(models.Model):
             self.last_created_submission_id = all_submissions[0]["id"]
             self.last_created_submission_time = all_submissions[0]["creationTimeSeconds"]
             self.save()
-        # TODO: Create relevant problem objects if they don't exist
-        # TODO: Create relevant submission objects
-        # These are different from solution objects.
+        for sub in all_submissions:
+            # Create relevant problem object if it does not exist.
+            problem = sub["problem"]
+            problem_id = Problem.get_problem_id("CF", [problem["contestId"], problem["index"]])
+            if Problem.objects.get_queryset().filter(source="CF", problem_id=problem_id).count() == 0:
+                p = Problem.objects.create(
+                    source="CF",
+                    problem_id=problem_id,
+                    rating=problem["rating"],
+                )
+            else:
+                p = Problem.objects.get(source="CF", problem_id=problem_id)
+            # Create relevant submission object.
+            Submission.objects.create(
+                submission_id=sub["id"],
+                problem=p,
+                result=sub["verdict"],
+                language=Language.objects.get_or_create(show_name=sub["programmingLanguage"])[0],
+                time_taken=sub["timeConsumedMillis"],
+                memory_taken=sub["memoryConsumedBytes"],
+            )
         return all_submissions
 
 def test_request():

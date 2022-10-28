@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "dashboard.apps.DashboardConfig",
     "sitelinks.apps.SitelinksConfig",
+    "problems.apps.ProblemsConfig",
 ]
 
 MIDDLEWARE = [
