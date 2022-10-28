@@ -1,91 +1,125 @@
 <template>
   <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
+    <v-row>
+      <v-col cols="12" lg="8"> <!-- Weeklies, freeze calendar -->
+        <v-sheet >
+          <h2 style="margin-bottom: 20px;">Weekly Problems</h2>
+          <v-row>
+            <v-col cols="12" sm="4">
+              <v-btn
+                elevation="7"
+                x-large
+                width="100%"
+                height="150"
+                color="green"
+                dark
+              >
+                <v-row style="display: block; padding: 20px;">
+                  <v-col cols="12" style="height: 30px;">
+                  </v-col>
+                  <v-col cols="12">
+                    Problem Name
+                    <v-divider></v-divider>
+                    <small>CF 802/C</small>
+                  </v-col>
+                  <v-col cols="12" style="height: 30px;">
+                    1500 Coins
+                  </v-col>
+                </v-row>
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-btn
+                elevation="7"
+                x-large
+                width="100%"
+                height="150"
+                color="red"
+                dark
+              >
+                <v-row style="display: block; padding: 20px;">
+                  <v-col cols="12" style="height: 30px;">
+                  </v-col>
+                  <v-col cols="12">
+                    Problem Name
+                    <v-divider></v-divider>
+                    <small>CF 802/C</small>
+                  </v-col>
+                  <v-col cols="12" style="height: 30px;">
+                    1500 Coins
+                  </v-col>
+                </v-row>
+              </v-btn>
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-btn
+                elevation="7"
+                x-large
+                width="100%"
+                height="150"
+                color="red"
+                dark
+              >
+                <v-row style="display: block; padding: 20px;">
+                  <v-col cols="12" style="height: 30px;">
+                  </v-col>
+                  <v-col cols="12">
+                    Problem Name
+                    <v-divider></v-divider>
+                    <small>CF 802/C</small>
+                  </v-col>
+                  <v-col cols="12" style="height: 30px;">
+                    1500 Coins
+                  </v-col>
+                </v-row>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <h2 style="margin-top: 40px; margin-bottom: 20px;">Freeze Calendar</h2>
+          <v-calendar
+            :weekdays="[0, 1, 2, 3, 4, 5, 6]"
+            type="month"
           >
-            {{ next.text }}
-          </a>
-        </v-row>
+            <template v-slot:day="{ }">
+              <div>
+              </div>
+            </template>
+            <template v-slot:day-label="{ day, date }">
+              <div style="min-height: 30px">
+                <v-btn 
+                  v-if="streakDays()[0].includes(date) || streakDays()[1].includes(date)"
+                  :color="streakDays()[0].includes(date) ? 'green' : 'blue'"
+                >
+                  {{ day }}
+                </v-btn>
+                <span v-else>
+                  {{ day }}
+                </span>
+              </div>
+            </template>
+          </v-calendar>
+        </v-sheet>
       </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
+      <v-col cols="12" lg="4"> <!-- Recently solved problems by others -->
+        <v-sheet>
+          <h2 style="margin-bottom: 20px;">Recently Solved</h2>
+          <v-card
+            tile
           >
-            {{ link.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>Card Game</v-list-item-title>
+                <v-list-item-subtitle>Solved by xyz</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title>Diabolical Defuser</v-list-item-title>
+                <v-list-item-subtitle>Solved by noone</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+        </v-sheet>
       </v-col>
     </v-row>
   </v-container>
@@ -96,6 +130,19 @@
 
   export default Vue.extend({
     name: 'HelloWorld',
+
+    methods: {
+      streakDays() {
+        var d1 = new Date("Oct 26 2022");
+        var d2 = new Date("Oct 25 2022");
+        var d3 = new Date("Oct 24 2022");
+        var d4 = new Date("Oct 23 2022");
+        return [
+          [d1.toISOString().split("T")[0], d3.toISOString().split("T")[0], d4.toISOString().split("T")[0]],
+          [d2.toISOString().split("T")[0]]
+        ]
+      }
+    },
 
     data: () => ({
       ecosystem: [
