@@ -91,16 +91,16 @@
   import axios from 'axios'
 
   const API_URL = "http://127.0.0.1:8000/api/";
+  const USER_ID = 1
 
   export default Vue.extend({
     name: 'HelloWorld',
 
     mounted() {
       axios
-        .get(API_URL + "problems/")
+        .get(API_URL + "weeklies/get_user_weeklies/", { params: { user_id: USER_ID} })
         .then(response => {
-          this.weeklies = response.data.results;
-          this.weeklies.splice(3);
+          this.weeklies = response.data.problem_list;
         })
         .catch(error => {
           console.log(error);
