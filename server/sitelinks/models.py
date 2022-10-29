@@ -54,7 +54,7 @@ class CodeForcesLink(models.Model):
                 p = Problem.objects.create(
                     source="CF",
                     problem_id=problem_id,
-                    rating=problem["rating"],
+                    rating=problem.get("rating", 0),
                     name=problem["name"],
                     tags=problem["tags"],
                 )
