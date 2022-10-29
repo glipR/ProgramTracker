@@ -12,6 +12,7 @@ class ProblemSerializer(serializers.ModelSerializer):
 class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
+    ordering_fields = ("rating")
 
 class SubmissionSerializer(serializers.ModelSerializer):
     
@@ -37,6 +38,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class SubmissionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
+    ordering_fields = ("submission_time")
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
