@@ -1,7 +1,11 @@
+from datetime import datetime
+from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from account.api import UserSerializer
-from .models import Problem, Submission, Language, Solution
+from .models import Problem, Submission, Language, Solution, WeeklyProblemSelection
 
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,3 +53,33 @@ class LanguageSerializer(serializers.ModelSerializer):
 class LanguageViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
+
+class WeeklyProblemSelectionSerializer(serializers.ModelSerializer):
+
+    problem_list = ProblemSerializer(many=True)
+    class Meta:
+        model = WeeklyProblemSelection
+        fields = ["id", "problem_list", "week_start", "week_end"]
+        depth = 1
+
+class WeeklyProblemSelectionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = WeeklyProblemSelection.objects.all()
+    serializer_class = WeeklyProblemSelectionSerializer
+
+    @action(detail=False, methods=["GET"])
+    def get_user_weeklies(self, request, pk=None):
+        uid = request.GET.get("user_id")
+        if not uid:
+            return Response("No user ID in request.", status=400)
+        try:
+            uid = int(uid)
+            u = User.objects.get(id=uid)
+        except:
+            return Response("User ID given is invalid.", status=400)
+        f = WeeklyProblemSelection.get_for_date(u, datetime.now().date())
+        if f.count() == 0:
+            obj = WeeklyProblemSelection.create_from_date(u, datetime.now().date())
+        else:
+            obj = f.get()
+        serializer = WeeklyProblemSelectionSerializer(obj, many=False)
+        return Response(serializer.data)

@@ -1,4 +1,5 @@
 import datetime
+import random
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -67,3 +68,39 @@ class Solution(models.Model):
     code = models.TextField()
     whiteboard_data = models.TextField()
     explanation = models.TextField()
+
+class WeeklyProblemSelection(models.Model):
+    """
+    A set of problems which when solved give the user bonus coins and a streak freeze.
+    Resets weekly. Problems are selected in order to push a bit above the users current rating.
+    """
+
+    user = models.ForeignKey(User, related_name="weeklies", on_delete=models.CASCADE)
+    problem_list = models.ManyToManyField(Problem)
+    week_start = models.DateField()
+    week_end = models.DateField()
+    
+    @classmethod
+    def create_from_date(cls, user: User, date: datetime.date):
+        start_date = date - datetime.timedelta(days=(date.isoweekday() - 1))
+        end_date = start_date + datetime.timedelta(days=7)
+        problems = cls.generate_problems_for(user)
+        obj = WeeklyProblemSelection.objects.create(
+            user=user,
+            week_start=start_date,
+            week_end=end_date,
+        )
+        obj.problem_list.set(problems)
+        return obj
+    
+    @classmethod
+    def get_for_date(cls, user: User, date: datetime.date):
+        return WeeklyProblemSelection.objects.filter(user=user, week_start__lte=date, week_end__gt=date)
+
+    @classmethod
+    def generate_problems_for(self, user: User):
+        # Generate 3 problems the user has not solved, with a rating bound of (current user rating) to (current user rating + 400).
+        possible_problems = list(Problem.objects.filter(rating__gte=user.info.rating(), rating__lte=user.info.rating()+400))
+        possible_problems = [p for p in possible_problems if p.submissions.filter(user=user).count() == 0]
+        random.shuffle(possible_problems)
+        return possible_problems[:3]

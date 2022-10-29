@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Problem, Submission, Solution, Language
+from .models import Problem, Submission, Solution, Language, WeeklyProblemSelection
 
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
@@ -15,4 +15,8 @@ class SolutionAdmin(admin.ModelAdmin):
 
 @admin.register(Language)
 class LanguageAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(WeeklyProblemSelection)
+class WeekliesAdmin(admin.ModelAdmin):
     pass

@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from account.api import UserViewSet
-from problems.api import ProblemViewSet, SubmissionViewSet, LanguageViewSet
+from problems.api import ProblemViewSet, SubmissionViewSet, LanguageViewSet, WeeklyProblemSelectionViewSet
 from streaks.api import StreakDayViewSet
 
 router = routers.DefaultRouter()
@@ -12,6 +12,7 @@ router.register(r"problems", ProblemViewSet)
 router.register(r"submissions", SubmissionViewSet)
 router.register(r"languages", LanguageViewSet)
 router.register(r"streaks", StreakDayViewSet)
+router.register(r"weeklies", WeeklyProblemSelectionViewSet)
 
 urlpatterns = [
     path('', include('dashboard.urls')),
