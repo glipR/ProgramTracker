@@ -3,4 +3,4 @@ from .models import UserInfo
 
 @admin.register(UserInfo)
 class UserInfoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("user", "coins", "freezes", "rating")
