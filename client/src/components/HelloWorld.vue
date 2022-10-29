@@ -4,8 +4,8 @@
       <v-col cols="12" lg="8"> <!-- Weeklies, freeze calendar -->
         <v-sheet >
           <h2 style="margin-bottom: 20px;">Weekly Problems</h2>
-          <v-row>
-            <v-col cols="12" sm="4">
+          <v-row v-if="!loading">
+            <v-col cols="12" sm="4" v-for="problem in weeklies" v-bind:key="problem.problem_id">
               <v-btn
                 elevation="7"
                 x-large
@@ -18,9 +18,9 @@
                   <v-col cols="12" style="height: 30px;">
                   </v-col>
                   <v-col cols="12">
-                    Problem Name
+                    {{ problem.name }}
                     <v-divider></v-divider>
-                    <small>CF 802/C</small>
+                    <small>{{ problem.source }} {{ problem.problem_id }}</small>
                   </v-col>
                   <v-col cols="12" style="height: 30px;">
                     1500 Coins
@@ -28,52 +28,12 @@
                 </v-row>
               </v-btn>
             </v-col>
-            <v-col cols="12" sm="4">
-              <v-btn
-                elevation="7"
-                x-large
-                width="100%"
-                height="150"
-                color="red"
-                dark
-              >
-                <v-row style="display: block; padding: 20px;">
-                  <v-col cols="12" style="height: 30px;">
-                  </v-col>
-                  <v-col cols="12">
-                    Problem Name
-                    <v-divider></v-divider>
-                    <small>CF 802/C</small>
-                  </v-col>
-                  <v-col cols="12" style="height: 30px;">
-                    1500 Coins
-                  </v-col>
-                </v-row>
-              </v-btn>
-            </v-col>
-            <v-col cols="12" sm="4">
-              <v-btn
-                elevation="7"
-                x-large
-                width="100%"
-                height="150"
-                color="red"
-                dark
-              >
-                <v-row style="display: block; padding: 20px;">
-                  <v-col cols="12" style="height: 30px;">
-                  </v-col>
-                  <v-col cols="12">
-                    Problem Name
-                    <v-divider></v-divider>
-                    <small>CF 802/C</small>
-                  </v-col>
-                  <v-col cols="12" style="height: 30px;">
-                    1500 Coins
-                  </v-col>
-                </v-row>
-              </v-btn>
-            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
           </v-row>
           <h2 style="margin-top: 40px; margin-bottom: 20px;">Freeze Calendar</h2>
           <v-calendar
@@ -105,19 +65,20 @@
           <h2 style="margin-bottom: 20px;">Recently Solved</h2>
           <v-card
             tile
+            v-if="!loading"
           >
-            <v-list-item two-line>
+            <v-list-item two-line v-for="sub in recent_submissions" v-bind:key="sub.submission_id">
               <v-list-item-content>
-                <v-list-item-title>Card Game</v-list-item-title>
-                <v-list-item-subtitle>Solved by xyz</v-list-item-subtitle>
+                <v-list-item-title>{{ sub.problem.name }}</v-list-item-title>
+                <v-list-item-subtitle>Solved by {{ sub.user.username }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-            <v-list-item two-line>
-              <v-list-item-content>
-                <v-list-item-title>Diabolical Defuser</v-list-item-title>
-                <v-list-item-subtitle>Solved by noone</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+          </v-card>
+          <v-card v-else>
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
           </v-card>
         </v-sheet>
       </v-col>
@@ -127,9 +88,36 @@
 
 <script lang="ts">
   import Vue from 'vue'
+  import axios from 'axios'
+
+  const API_URL = "http://127.0.0.1:8000/api/";
 
   export default Vue.extend({
     name: 'HelloWorld',
+
+    mounted() {
+      axios
+        .get(API_URL + "problems/")
+        .then(response => {
+          this.weeklies = response.data.results;
+          this.weeklies.splice(3);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => 
+          axios
+            .get(API_URL + "submissions/")
+            .then(response => {
+              this.recent_submissions = response.data.results;
+              this.recent_submissions.splice(9);
+            })
+            .catch(error => {
+              console.log(error);
+            })
+            .finally(() => this.loading = false)
+        );
+    },
 
     methods: {
       streakDays() {
@@ -141,60 +129,13 @@
           [d1.toISOString().split("T")[0], d3.toISOString().split("T")[0], d4.toISOString().split("T")[0]],
           [d2.toISOString().split("T")[0]]
         ]
-      }
+      },
     },
 
     data: () => ({
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com',
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify',
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
-        },
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer',
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-        },
-      ],
+      weeklies: [],
+      recent_submissions: [],
+      loading: true,
     }),
   })
 </script>

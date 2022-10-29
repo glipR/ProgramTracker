@@ -1,4 +1,6 @@
 from rest_framework import serializers, viewsets
+
+from account.api import UserSerializer
 from .models import Problem, Submission, Language, Solution
 
 class ProblemSerializer(serializers.ModelSerializer):
@@ -12,6 +14,10 @@ class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProblemSerializer
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    
+    problem = ProblemSerializer()
+    user = UserSerializer()
+    
     class Meta:
         model = Submission
         fields = [
@@ -25,6 +31,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
             "time_taken",
             "memory_taken",
         ]
+        depth = 1
+        
 
 class SubmissionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Submission.objects.all()
