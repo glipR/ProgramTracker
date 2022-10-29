@@ -76,10 +76,6 @@ class WeeklyProblemSelectionViewSet(viewsets.ReadOnlyModelViewSet):
             u = User.objects.get(id=uid)
         except:
             return Response("User ID given is invalid.", status=400)
-        f = WeeklyProblemSelection.get_for_date(u, datetime.now().date())
-        if f.count() == 0:
-            obj = WeeklyProblemSelection.create_from_date(u, datetime.now().date())
-        else:
-            obj = f.get()
+        obj = WeeklyProblemSelection.get_for_date(u, datetime.now().date())
         serializer = WeeklyProblemSelectionSerializer(obj, many=False)
         return Response(serializer.data)

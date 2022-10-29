@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class UserInfo(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="info")
-    coins = models.IntegerField(default=1000)
+    coins = models.IntegerField(default=0)
     freezes = models.IntegerField(default=0)
 
     def __str__(self):

@@ -95,7 +95,11 @@ class WeeklyProblemSelection(models.Model):
     
     @classmethod
     def get_for_date(cls, user: User, date: datetime.date):
-        return WeeklyProblemSelection.objects.filter(user=user, week_start__lte=date, week_end__gt=date)
+        query = WeeklyProblemSelection.objects.filter(user=user, week_start__lte=date, week_end__gt=date)
+        if query.count() == 0:
+            return cls.create_from_date(user, date)
+        else:
+            return query.get()
 
     @classmethod
     def generate_problems_for(self, user: User):
