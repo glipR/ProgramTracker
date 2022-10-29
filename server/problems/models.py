@@ -10,6 +10,8 @@ class Problem(models.Model):
     
     source = models.CharField(choices=PROBLEM_SOURCES, max_length=4)
     problem_id = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    tags = models.JSONField(default=list)
     rating = models.IntegerField()
     
     @classmethod
