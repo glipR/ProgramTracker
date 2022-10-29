@@ -1,5 +1,7 @@
 import datetime
 import random
+import requests
+import time
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -13,7 +15,7 @@ class Problem(models.Model):
     problem_id = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     tags = models.JSONField(default=list)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
     
     @classmethod
     def get_problem_id(cls, source, other_info):
@@ -21,6 +23,26 @@ class Problem(models.Model):
             # ContestID/ProblemIndex
             return f"{other_info[0]}/{other_info[1]}"
         return ""
+
+    @classmethod
+    def update_all_problem_instances(cls):
+        at_end = False
+        while not at_end:
+            request_url = f"https://codeforces.com/api/problemset.problems"
+            res = requests.get(request_url)
+            if res.status_code != 200:
+                time.sleep(3)
+                continue
+            probs = res.json()["result"]["problems"]
+            for prob in probs:
+                if "rating" not in prob:
+                    continue
+                p, _created = Problem.objects.get_or_create(source="CF", problem_id=Problem.get_problem_id("CF", [prob["contestId"], prob["index"]]))
+                p.name = prob["name"]
+                p.tags = prob["tags"]
+                p.rating = prob["rating"]
+                p.save()
+            at_end = True
 
     def get_short_source_name(self):
         if self.source == "CF":
