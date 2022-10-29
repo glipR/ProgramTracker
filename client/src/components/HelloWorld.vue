@@ -23,7 +23,7 @@
                     <small>{{ problem.source }} {{ problem.problem_id }}</small>
                   </v-col>
                   <v-col cols="12" style="height: 30px;">
-                    1500 Coins
+                    {{ problem.coin_value }} Coins
                   </v-col>
                 </v-row>
               </v-btn>

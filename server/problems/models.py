@@ -25,7 +25,10 @@ class Problem(models.Model):
         if self.source == "CF":
             return "CF"
         return "??"
-    
+
+    def coin_value(self):
+        return (self.rating - 200) // 50
+
     def __str__(self):
         return f"{self.get_short_source_name()}-{self.problem_id}"
 

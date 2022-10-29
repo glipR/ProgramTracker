@@ -6,7 +6,7 @@ from .models import Problem, Submission, Language, Solution
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
-        fields = ["id", "source", "problem_id", "rating", "name", "tags"]
+        fields = ["id", "source", "problem_id", "rating", "name", "tags", "coin_value"]
 
 
 class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
