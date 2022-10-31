@@ -1,3 +1,4 @@
+import requests
 from datetime import datetime
 from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets
@@ -17,6 +18,19 @@ class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
     ordering_fields = ("rating")
+    
+    @action(detail=True, methods=["GET"])
+    def get_statement(self, request, pk=None):
+        if not pk:
+            return Response("No problem ID in request.", status=400)
+        try:
+            p = Problem.objects.get(id=pk)
+            res = requests.get(p.link())
+            if res.status_code != 200:
+                return Response("Failed to retrieve")
+        except:
+            return Response("Problem ID given is invalid.", status=400)
+        return Response(res)
 
 class SubmissionSerializer(serializers.ModelSerializer):
     

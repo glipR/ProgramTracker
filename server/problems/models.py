@@ -24,6 +24,11 @@ class Problem(models.Model):
             return f"{other_info[0]}/{other_info[1]}"
         return ""
 
+    def link(self):
+        if self.source == "CF":
+            return "https://codeforces.com/problemset/problem/" + self.problem_id + "/"
+        return ""
+
     @classmethod
     def update_all_problem_instances(cls):
         at_end = False

@@ -6,6 +6,8 @@ from account.api import UserViewSet
 from problems.api import ProblemViewSet, SubmissionViewSet, LanguageViewSet, WeeklyProblemSelectionViewSet
 from streaks.api import StreakDayViewSet
 
+from problems.views import problem
+
 router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
 router.register(r"problems", ProblemViewSet)
@@ -19,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
+    path('problems/<slug:problem_id>/', problem),
 ]
