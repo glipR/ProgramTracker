@@ -12,6 +12,9 @@
                 width="100%"
                 height="150"
                 color="green"
+                class="text-center"
+                :href="'/problems/'+problem.id"
+                target="_blank"
                 dark
               >
                 <v-row style="display: block; padding: 20px;">
@@ -23,7 +26,11 @@
                     <small>{{ problem.source }} {{ problem.problem_id }}</small>
                   </v-col>
                   <v-col cols="12" style="height: 30px;">
-                    {{ problem.coin_value }} Coins
+                    {{ problem.coin_value }} <v-icon
+                      color="yellow darken-2"
+                    >mdi-checkbox-blank-circle</v-icon> 1 <v-icon
+                      color="blue darken-2"
+                    >mdi-hexagon-slice-6</v-icon>
                   </v-col>
                 </v-row>
               </v-btn>
