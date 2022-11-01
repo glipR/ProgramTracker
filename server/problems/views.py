@@ -8,4 +8,5 @@ def problem(request, problem_id=None):
         'bundle': webpack_stats_tracker.get_tags('problem'),
         'title': 'Index page from Example Django app',
         'problem_id': problem_id,
+        'user_id': request.user.id,
     }))

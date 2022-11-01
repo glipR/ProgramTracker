@@ -31,5 +31,6 @@ webpack_stats_tracker = WebpackStatsProcessing()
 def index(request):
     return HttpResponse(render(request, 'dashboard/vuetify_bundle.html', context={
         'bundle': webpack_stats_tracker.get_tags('index'),
-        'title': 'Index page from Example Django app'
+        'title': 'Index page from Example Django app',
+        'user_id': request.user.id,
     }))
