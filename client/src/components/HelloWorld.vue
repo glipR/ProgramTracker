@@ -52,10 +52,12 @@
               </div>
             </template>
             <template v-slot:day-label="{ day, date }">
-              <div style="min-height: 30px">
+              <div
+                :style="'min-height: 30px; background-color: ' + (date == today() ? 'rgb(251, 192, 45)' : 'rgba(0, 0, 0, 0)')"
+              >
                 <v-btn 
                   v-if="streakDays()[0].includes(date) || streakDays()[1].includes(date)"
-                  :color="streakDays()[0].includes(date) ? 'green' : 'blue'"
+                  :color="streakDays()[0].includes(date) ? 'green' : 'rgb(25, 118, 210)'"
                 >
                   {{ day }}
                 </v-btn>
@@ -128,15 +130,18 @@
 
     methods: {
       streakDays() {
-        var d1 = new Date("Oct 26 2022");
-        var d2 = new Date("Oct 25 2022");
-        var d3 = new Date("Oct 24 2022");
-        var d4 = new Date("Oct 23 2022");
+        var d1 = new Date("Nov 2 2022");
+        var d2 = new Date("Nov 1 2022");
+        var d3 = new Date("Oct 31 2022");
         return [
-          [d1.toISOString().split("T")[0], d3.toISOString().split("T")[0], d4.toISOString().split("T")[0]],
+          [d1.toISOString().split("T")[0], d3.toISOString().split("T")[0]],
           [d2.toISOString().split("T")[0]]
         ]
       },
+      today() {
+        var d1 = new Date();
+        return d1.toISOString().split("T")[0];
+      }
     },
 
     data: () => ({
