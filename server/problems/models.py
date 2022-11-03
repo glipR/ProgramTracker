@@ -80,9 +80,9 @@ class Submission(models.Model):
     submission_id = models.CharField(max_length=50)
     submission_time = models.DateTimeField(default=datetime.datetime.now())
     
-    result = models.CharField(max_length=48)
-    time_taken = models.IntegerField()
-    memory_taken = models.IntegerField()
+    result = models.CharField(max_length=48, default="OK")
+    time_taken = models.IntegerField(default=0)
+    memory_taken = models.IntegerField(default=0)
 
 class Solution(models.Model):
     """

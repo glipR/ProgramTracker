@@ -5,6 +5,7 @@ from rest_framework import routers
 from account.api import UserViewSet
 from problems.api import ProblemViewSet, SubmissionViewSet, LanguageViewSet, WeeklyProblemSelectionViewSet
 from streaks.api import StreakDayViewSet
+from sitelinks.api import CFLinkViewSet
 
 from problems.views import problem
 
@@ -15,6 +16,7 @@ router.register(r"submissions", SubmissionViewSet)
 router.register(r"languages", LanguageViewSet)
 router.register(r"streaks", StreakDayViewSet)
 router.register(r"weeklies", WeeklyProblemSelectionViewSet)
+router.register(r"links/cf", CFLinkViewSet)
 
 urlpatterns = [
     path('', include('dashboard.urls')),
