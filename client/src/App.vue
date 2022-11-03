@@ -27,6 +27,7 @@ export default Vue.extend({
 
   mounted() {
     api_helper.initialise();
+    api_helper.queueRepeatedSubmissionUpdates();
   }
 
 });

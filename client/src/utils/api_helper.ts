@@ -54,6 +54,15 @@ export default {
     return this.PROBLEM_ID != "";
   },
 
+  async queueRepeatedSubmissionUpdates() {
+    const end = false;
+    while (!end) {
+      console.log("Updating CF Submissions...")
+      await this.updateLinkSubmissions();
+      await new Promise<void>((resolve, reject) => setTimeout(resolve, 5000));
+    }
+  },
+
   async updateLinkSubmissions() {
     await axios
       .get(this.API_URL + "users/" + this.USER_ID + "/")
@@ -71,7 +80,6 @@ export default {
     const non_ok:CF_submission_return[] = [];
     while (!at_end) {
       const cf_obj = this.user_data.codeforces[0];
-      console.log(start);
       await axios
         .get("https://codeforces.com/api/user.status?handle=" + cf_obj.handle + "&from=" + start + "&count=" + batch_size)
         .then(response => {
@@ -96,12 +104,14 @@ export default {
           return new Promise<void>((resolve, reject) => setTimeout(resolve, 3000));
         });
     }
-    await axios
+    return axios
       .post(this.API_URL + "links/cf/add_submissions/", {
         user_id: this.USER_ID,
         submissions: submissions,
       })
-      .then()
+      .then(response => {
+        console.log(submissions.length + " submissions added.");
+      })
       .catch(error => {
         console.error(error);
       });
