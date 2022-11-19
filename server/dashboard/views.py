@@ -27,8 +27,16 @@ class WebpackStatsProcessing:
 
 webpack_stats_tracker = WebpackStatsProcessing()
 
+from server.views import login_view, logout_view, register_view
 
 def index(request):
+    if request.method == "POST":
+        if request.POST["post_type"] == "login":
+            return login_view(request)
+        elif request.POST["post_type"] == "logout":
+            return logout_view(request)
+        elif request.POST["post_type"] == "register":
+            return register_view(request)
     return HttpResponse(render(request, 'dashboard/vuetify_bundle.html', context={
         'bundle': webpack_stats_tracker.get_tags('index'),
         'title': 'Index page from Example Django app',
