@@ -12,7 +12,7 @@
         aria-hidden="false"
       >mdi-balloon</v-icon>
 
-      <h2 class="ml-2">ProgramTracker</h2>
+      <h2 class="ml-2">ConstantTime</h2>
     </div>
 
     <v-spacer></v-spacer>
