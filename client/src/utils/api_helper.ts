@@ -35,6 +35,7 @@ const def_user_data:USER_DATA = {
 
 
 export default {
+  SITE_URL: "http://127.0.0.1:8000",
   API_URL: "http://127.0.0.1:8000/api/",
   USER_ID: "",
   PROBLEM_ID: "",
@@ -55,11 +56,12 @@ export default {
   },
 
   async queueRepeatedSubmissionUpdates() {
+    if (this.USER_ID == "None") return;
     const end = false;
     while (!end) {
       console.log("Updating CF Submissions...")
       await this.updateLinkSubmissions();
-      await new Promise<void>((resolve, reject) => setTimeout(resolve, 5000));
+      await new Promise<void>((resolve) => setTimeout(resolve, 5000));
     }
   },
 
@@ -101,7 +103,7 @@ export default {
           console.error(error);
         })
         .finally(() => {
-          return new Promise<void>((resolve, reject) => setTimeout(resolve, 3000));
+          return new Promise<void>((resolve) => setTimeout(resolve, 3000));
         });
     }
     return axios
@@ -109,7 +111,7 @@ export default {
         user_id: this.USER_ID,
         submissions: submissions,
       })
-      .then(response => {
+      .then(() => {
         console.log(submissions.length + " submissions added.");
       })
       .catch(error => {
