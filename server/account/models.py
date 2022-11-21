@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class UserInfo(models.Model):
-    
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="info")
     coins = models.IntegerField(default=0)
     freezes = models.IntegerField(default=0)
@@ -12,7 +13,8 @@ class UserInfo(models.Model):
 
     def rating(self):
         from problems.models import Submission
-        # TODO: Better rating. 
+
+        # TODO: Better rating.
         s = Submission.objects.filter(user=self.user).order_by("-submission_time")[:30]
         submissions = list(s)
         contribution = 1

@@ -3,7 +3,12 @@ from django.urls import path, include
 from rest_framework import routers
 
 from account.api import UserViewSet
-from problems.api import ProblemViewSet, SubmissionViewSet, LanguageViewSet, WeeklyProblemSelectionViewSet
+from problems.api import (
+    ProblemViewSet,
+    SubmissionViewSet,
+    LanguageViewSet,
+    WeeklyProblemSelectionViewSet,
+)
 from streaks.api import StreakDayViewSet
 from sitelinks.api import CFLinkViewSet
 
@@ -19,9 +24,9 @@ router.register(r"weeklies", WeeklyProblemSelectionViewSet)
 router.register(r"links/cf", CFLinkViewSet)
 
 urlpatterns = [
-    path('', include('dashboard.urls')),
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/', include(router.urls)),
-    path('problems/<slug:problem_id>/', problem),
+    path("", include("dashboard.urls")),
+    path("admin/", admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
+    path("api/", include(router.urls)),
+    path("problems/<slug:problem_id>/", problem),
 ]

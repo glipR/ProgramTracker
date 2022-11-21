@@ -41,8 +41,13 @@ Site to keep track of progress on various judge websites and reward users for:
 
 * Requires Python 3.9+
 * Requires NPM
+* Requires PostgreSQL installed, and a database created
+    * Either make the database/user specified in `server/server/settings.py` in the DASHBOARD item, OR
+    * Make a new DASHBOARD dictionary in `server/server/local_settings.py`
+
+Run `install.sh` to install.
 
 ## Running the instance
 
 * Frontend: Must be built before Backend with `cd client`, `npm run serve`
-* Backend: `cd server`, `python -m manage.py runserver`
+* Backend: `cd server`, `python manage.py runserver`

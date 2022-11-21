@@ -1,6 +1,7 @@
 from rest_framework import serializers, viewsets
 from .models import StreakDay
 
+
 class StreakDaySerializer(serializers.ModelSerializer):
     class Meta:
         model = StreakDay
