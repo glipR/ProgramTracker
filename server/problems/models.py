@@ -6,17 +6,17 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Problem(models.Model):
-    
+
     PROBLEM_SOURCES = (
         ("CF", "CodeForces"),
     )
-    
+
     source = models.CharField(choices=PROBLEM_SOURCES, max_length=4)
     problem_id = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     tags = models.JSONField(default=list)
     rating = models.IntegerField(default=0)
-    
+
     @classmethod
     def get_problem_id(cls, source, other_info):
         if source == "CF":
@@ -61,7 +61,7 @@ class Problem(models.Model):
         return f"{self.get_short_source_name()}-{self.problem_id}"
 
 class Language(models.Model):
-    
+
     show_name = models.CharField(max_length=50)
     file_extension = models.CharField(max_length=10)
     short_name = models.CharField(max_length=10)
@@ -73,13 +73,13 @@ class Submission(models.Model):
     """
     A submission is just a judge submission on the respective site.
     """
-    
+
     problem = models.ForeignKey(Problem, related_name="submissions", on_delete=models.CASCADE)
     language = models.ForeignKey(Language, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     submission_id = models.CharField(max_length=50)
     submission_time = models.DateTimeField(default=datetime.datetime.now())
-    
+
     result = models.CharField(max_length=48, default="OK")
     time_taken = models.IntegerField(default=0)
     memory_taken = models.IntegerField(default=0)
@@ -89,7 +89,7 @@ class Solution(models.Model):
     A solution is something that is maintained for every user/problem pairing.
     It can be made public / private, and receive upvotes.
     """
-    
+
     problem = models.ForeignKey(Problem, related_name="solutions", on_delete=models.CASCADE)
     language = models.ForeignKey(Language, on_delete=models.PROTECT)
     code = models.TextField()
@@ -106,7 +106,7 @@ class WeeklyProblemSelection(models.Model):
     problem_list = models.ManyToManyField(Problem)
     week_start = models.DateField()
     week_end = models.DateField()
-    
+
     @classmethod
     def create_from_date(cls, user: User, date: datetime.date):
         start_date = date - datetime.timedelta(days=(date.isoweekday() - 1))
@@ -119,7 +119,7 @@ class WeeklyProblemSelection(models.Model):
         )
         obj.problem_list.set(problems)
         return obj
-    
+
     @classmethod
     def get_for_date(cls, user: User, date: datetime.date):
         query = WeeklyProblemSelection.objects.filter(user=user, week_start__lte=date, week_end__gt=date)

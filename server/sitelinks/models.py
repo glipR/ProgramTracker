@@ -9,10 +9,10 @@ from problems.models import Problem, Submission, Language
 CF_NUM_SUBMISSIONS = 20
 
 class CodeForcesLink(models.Model):
-    
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="codeforces")
     handle = models.CharField(max_length=120)
-    
+
     last_created_submission_time = models.BigIntegerField(default=-1)
     last_created_submission_id = models.BigIntegerField(default=-1)
 

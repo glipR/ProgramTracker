@@ -3,7 +3,7 @@ from rest_framework import serializers, viewsets
 from .models import UserInfo
 
 class UserInfoSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = UserInfo
         fields = ["coins", "freezes", "rating"]

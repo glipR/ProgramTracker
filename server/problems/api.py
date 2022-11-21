@@ -18,7 +18,7 @@ class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
     ordering_fields = ("rating")
-    
+
     @action(detail=True, methods=["GET"])
     def get_statement(self, request, pk=None):
         if not pk:
@@ -33,16 +33,16 @@ class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(res)
 
 class SubmissionSerializer(serializers.ModelSerializer):
-    
+
     problem = ProblemSerializer()
     user = UserSerializer()
-    
+
     class Meta:
         model = Submission
         fields = [
-            "id", 
-            "problem", 
-            "language", 
+            "id",
+            "problem",
+            "language",
             "user",
             "submission_id",
             "submission_time",
@@ -51,7 +51,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
             "memory_taken",
         ]
         depth = 1
-        
+
 
 class SubmissionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Submission.objects.all()
