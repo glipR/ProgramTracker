@@ -26,7 +26,7 @@ STATS_FILE = os.path.join(BASE_DIR, "webpack-stats.json")
 SECRET_KEY = "django-insecure-$w_nt*$4@jvq7q0s)hjf5v@y(pzo29t6b9@gk181@-#ho=97um"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -144,3 +144,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+from .local_settings import *
