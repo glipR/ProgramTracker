@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('problems', '0010_alter_submission_memory_taken_and_more'),
+        ("problems", "0010_alter_submission_memory_taken_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='submission',
-            name='submission_time',
-            field=models.DateTimeField(default=datetime.datetime(2022, 11, 21, 19, 6, 54, 974235)),
+            model_name="submission",
+            name="submission_time",
+            field=models.DateTimeField(
+                default=datetime.datetime(2022, 11, 21, 19, 6, 54, 974235)
+            ),
         ),
     ]

@@ -8,6 +8,7 @@ from rest_framework.decorators import action
 from account.api import UserSerializer
 from .models import Problem, Submission, Language, Solution, WeeklyProblemSelection
 
+
 class ProblemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
@@ -17,7 +18,7 @@ class ProblemSerializer(serializers.ModelSerializer):
 class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Problem.objects.all()
     serializer_class = ProblemSerializer
-    ordering_fields = ("rating")
+    ordering_fields = "rating"
 
     @action(detail=True, methods=["GET"])
     def get_statement(self, request, pk=None):
@@ -31,6 +32,7 @@ class ProblemViewSet(viewsets.ReadOnlyModelViewSet):
         except:
             return Response("Problem ID given is invalid.", status=400)
         return Response(res)
+
 
 class SubmissionSerializer(serializers.ModelSerializer):
 
@@ -56,7 +58,8 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class SubmissionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
-    ordering_fields = ("submission_time")
+    ordering_fields = "submission_time"
+
 
 class LanguageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,13 +71,16 @@ class LanguageViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
 
+
 class WeeklyProblemSelectionSerializer(serializers.ModelSerializer):
 
     problem_list = ProblemSerializer(many=True)
+
     class Meta:
         model = WeeklyProblemSelection
         fields = ["id", "problem_list", "week_start", "week_end"]
         depth = 1
+
 
 class WeeklyProblemSelectionViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = WeeklyProblemSelection.objects.all()

@@ -8,6 +8,7 @@ from problems.models import Problem, Submission, Language
 
 CF_NUM_SUBMISSIONS = 20
 
+
 class CodeForcesLink(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="codeforces")
@@ -23,8 +24,15 @@ class CodeForcesLink(models.Model):
         for sub in submissions[::-1]:
             # Create relevant problem object if it does not exist.
             problem = sub["problem"]
-            problem_id = Problem.get_problem_id("CF", [problem["contestId"], problem["index"]])
-            if Problem.objects.get_queryset().filter(source="CF", problem_id=problem_id).count() == 0:
+            problem_id = Problem.get_problem_id(
+                "CF", [problem["contestId"], problem["index"]]
+            )
+            if (
+                Problem.objects.get_queryset()
+                .filter(source="CF", problem_id=problem_id)
+                .count()
+                == 0
+            ):
                 p = Problem.objects.create(
                     source="CF",
                     problem_id=problem_id,
@@ -39,9 +47,13 @@ class CodeForcesLink(models.Model):
                 sub_obj, created = Submission.objects.get_or_create(
                     user=self.user,
                     submission_id=sub["id"],
-                    submission_time=datetime.datetime.fromtimestamp(sub["creationTimeSeconds"]),
+                    submission_time=datetime.datetime.fromtimestamp(
+                        sub["creationTimeSeconds"]
+                    ),
                     problem=p,
-                    language=Language.objects.get_or_create(show_name=sub["programmingLanguage"])[0]
+                    language=Language.objects.get_or_create(
+                        show_name=sub["programmingLanguage"]
+                    )[0],
                 )
                 sub_obj.result = sub["verdict"]
                 sub_obj.time_taken = sub["timeConsumedMillis"]
