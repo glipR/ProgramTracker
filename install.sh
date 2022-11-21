@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "It is assumed you have install npm, python and postgresql before continuing."
-echo "Additionally for postgres it is assumed you've setup a database and user according to the contents of `server/server/settings.py`, in the DATABASE dictionary, or made your own settings in server/server/local_settings.py."
+echo "Additionally for postgres it is assumed you've setup a database and user according to the contents of 'server/server/settings.py', in the DATABASE dictionary, or made your own settings in server/server/local_settings.py."
 
 echo "Please enter what you use to invoke python (py|python|python3): "
 read python
@@ -38,6 +38,9 @@ else
     touch server/server/local_settings.py
     echo "DEBUG = True" > server/server/local_settings.py
 fi
+
+touch server/webpack-stats.json
+echo "{}" > server/webpack-stats.json
 
 cd server
 
