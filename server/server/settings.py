@@ -82,12 +82,15 @@ WSGI_APPLICATION = "server.wsgi.application"
 
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+# The default database information and credentials.
+# Can be overridden through local_settings.py
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "constanttime",
+        "PORT": 5432,
+        "USER": "constanttime_user",
+        "PASSWORD": 123,
     }
 }
 
